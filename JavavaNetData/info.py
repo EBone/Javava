@@ -22,6 +22,9 @@ class GameStatus:
     Recovery=0x07
     HangUp=0x08
     Done=0x09
+    @classmethod
+    def get_status(cls):
+        return [cls.Invalid,cls.Waiting,cls.Excecuting,cls.Failure,cls.Pause,cls.Abort,cls.Recovery,cls.HangUp,cls.Done]
 
 class GameResult:
     Win=0x01
@@ -29,18 +32,9 @@ class GameResult:
     Lose=0x04
 
 class GameCommand:
-    Forward=0x01
-    Backward=0x02
-    Left=0x03
-    Right=0x04
-    Upward=0x05
-    Downward=0x06
+    Move=0x01
     Catch=0x07
-    Loose=0x08
-
-    @classmethod
-    def getcommand(cls):
-        return [cls.Forward,cls.Backward,cls.Left,cls.Right,cls.Upward,cls.Downward,cls.Catch,cls.Loose]
+    SwitchCamera=0x20
 
 
 if __name__=="__main__":

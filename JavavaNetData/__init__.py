@@ -18,28 +18,18 @@ def generate_classdict():
 
 classdict=generate_classdict()
 
-def unpack_data(data):
-	revheader=struct.unpack('>5BH',data[:7])
-	body=data[7:]
-	send_len = struct.unpack('>H', body[:2])[0]
-	send_content_pos = send_len + 2
-	send_id=struct.unpack(str(send_len)+'s',body[2:send_content_pos])[0]
-	recv_len=struct.unpack('>H',body[send_content_pos:send_content_pos+2])[0]
-	recv_content_pos=send_content_pos+2+recv_len
-	recv_id=struct.unpack(str(recv_len)+'s',body[send_content_pos+2:recv_content_pos])[0]
-	msgname=revheader[4]
+def unpack_data(msgname,data):
 	if  msgname in classdict:
-		paramlist=classdict[msgname](send_id,recv_id).unpack(body[recv_content_pos:])
-		return revheader,(send_id,recv_id),paramlist
+		paramlist=classdict[msgname]().unpack(data)
+		return paramlist
 	raise ValueError("unpack msgname is not right ")
 	
 def pack_data(messagename,send_id,recv_id,*params):
 	if messagename in classdict:
-		return classdict[messagename](send_id,recv_id).pack(*params)
+		return classdict[messagename]().pack(send_id,recv_id,*params)
 	raise ValueError("pack msgname is not right")
-	
-	
-		
+
+
 if __name__=="__main__":
 	#print(generate_classdict())
 	print(pack_data(0x01,"fuckthatsfasdfsdfasdfasf补充：1 初始化"))
